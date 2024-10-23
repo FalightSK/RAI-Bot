@@ -1,0 +1,19 @@
+# Ignore server log
+log/
+*.txt
+*.json
+
+# Additional data
+*.csv
+
+# Python cache
+__pycache__/
+
+# Large file
+language_model/
+
+# None use
+ignore/
+
+# Secret
+.env
