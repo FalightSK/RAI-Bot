@@ -220,11 +220,11 @@ def chat_call(text, user_id) -> str:
 
     question += text
     query = rag_bot(question)
-    rag_data = rager.search(query)
-    try:
-        information = rag_data['topic'] + ": "+ rag_data['detail'] + '\ncontact:' +rag_data['contact']
-    except:
-        information = rag_data['topic'] + ": "+ rag_data['detail'] + '\ncontact:' +rag_data['link'] + '\njob oppornity'+rag_data['job']
+    information = rager.search(query)
+    # try:
+    #     information = rag_data['topic'] + ": "+ rag_data['detail'] + '\ncontact:' +rag_data['contact']
+    # except:
+    #     information = rag_data['topic'] + ": "+ rag_data['detail'] + '\ncontact:' +rag_data['link'] + '\njob oppornity'+rag_data['job']
     print(information)
     text_rag = f"Doc: {information}\nQuestion: {question}"
     text_rag = sum_bot(text_rag)
