@@ -16,18 +16,15 @@ def chunking(sentences: str, chunksize: int, overlap: int) -> tuple[list[str], l
     tokenizer = AutoTokenizer.from_pretrained(r'airesearch/LLaMa3-8b-WangchanX-sft-Full')
     tokens = []
     for s in sub_sentenses:
-        tokens += tokenizer.tokenize(s.lower())
+        tokens += tokenizer.encode(s.lower(), max_length=512, padding=False,truncation=True, return_overflowing_tokens=True)[0][1:]
     
-    # print(tokens)
     chunks, vectors = [], []
     for i in range(0, len(tokens), chunksize - overlap):
-        sen2vec = "".join(tokens[i:i+chunksize])
-        sen2vec = re.sub(r'▁', ' ', sen2vec)
+        sen2vec = "".join(tokenizer.decode(tokens[i:i+chunksize]))
         if i == 0:
             chunk = sen2vec
         else:
-            chunk = "".join(tokens[i+overlap: i+chunksize])
-            chunk = re.sub(r'▁', ' ', chunk)
+            chunk = "".join(tokenizer.decode(tokens[i+overlap: i+chunksize]))
         vector = model.forward(sen2vec)
         
         chunks.append(chunk)
@@ -59,8 +56,8 @@ def generate(link: str, save_name: str = 'doc'):
     chunks, vectors = chunking(documents, 128, 24)
     print(str(chunks).count("<eot>"))
     del documents, df
-    # print("###########\n", chunks[3])
-    # print("###########\n",chunks[4])
+    #print("###########\n", chunks[0])
+    #print("###########\n",chunks[1])
     # print(len(chunks))
     
     database = {}
@@ -79,4 +76,4 @@ def generate(link: str, save_name: str = 'doc'):
         pass
     
 if __name__ == '__main__':
-    pass
+    generate(r'https://docs.google.com/spreadsheets/d/1yniTTu2EkxJHuO0lzWbvvCQWcn-FT8Hnb3soPNYs--Q/edit?usp=drivesdk')

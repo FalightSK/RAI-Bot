@@ -40,7 +40,7 @@ print('initailizing')
 cache = {}
 rag_bot = Agent_module('rag_bot', rag_system, OPENAI_CLIEN, model='typhoon-v1.5x-70b-instruct')
 chater = Agent_module('chat_bot', qa_bot, OPENAI_CLIEN, model='typhoon-v1.5x-70b-instruct')
-sum_bot = Agent_module('sum_bot', sum_rag, OPENAI_CLIEN)
+sum_bot = Agent_module('sum_bot', sum_rag, OPENAI_CLIEN, model='typhoon-v1.5x-70b-instruct')
 filename=None
 rager = RetriveDoc() if filename is None else RetriveDoc(filename) 
 print('initailized')
@@ -225,9 +225,10 @@ def chat_call(text, user_id) -> str:
     #     information = rag_data['topic'] + ": "+ rag_data['detail'] + '\ncontact:' +rag_data['contact']
     # except:
     #     information = rag_data['topic'] + ": "+ rag_data['detail'] + '\ncontact:' +rag_data['link'] + '\njob oppornity'+rag_data['job']
-    print(information)
+    #print(information)
     text_rag = f"Doc: {information}\nQuestion: {question}"
     text_rag = sum_bot(text_rag)
+    print(text_rag)
     msg = f"rag: {text_rag}\nquestion: {question}"
     res = chater(msg)
 
